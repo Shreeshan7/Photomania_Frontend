@@ -9,8 +9,9 @@ This app allows users to discover, collect, and share images and links to variou
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
-    1. [Clone the repository](#1-clone-the-repository)
-    2. [Install dependencies](#2-install-dependencies)
+    1. [Clone the repository](#clone-the-repository)
+    2. [Install dependencies](#install-dependencies)
+    3. [Start server](#tart-server)
 - [Usage](#usage)
 - [Author](#author)
 
@@ -60,6 +61,10 @@ This app allows users to discover, collect, and share images and links to variou
 2. Sign up for a new account or log in with your existing credentials.
 3. Start posting you own images.
 4. Explore the feed to discover pins from other users.
+
+## Figma wireframe
+
+https://www.figma.com/design/S8UFvGgHuxmi4SyI3NAfbL/Untitled?node-id=4-425&t=VNi8F4i8s6WlYYX1-0
 
 ## Author
 

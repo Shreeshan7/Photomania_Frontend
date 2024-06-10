@@ -21,7 +21,10 @@ const Home = () => {
         {data.map((posts) => (
           <div key={posts.id}>
             <div className="flex justify-center">
-              <img src="" alt="image" />
+              <img
+                src={`http://localhost:8000/${posts.imageUrl.replace("public\\uploads\\", "uploads/")}`}
+                alt="image"
+              />
             </div>
             <p>{posts.imageUrl}</p>
 

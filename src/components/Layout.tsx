@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <>
       <Navbar />
-      <div className="p-5">
+      <div className="px-5 pb-2">
         <Outlet />
       </div>
       <Footer />

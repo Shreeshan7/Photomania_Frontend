@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { RxAvatar } from "react-icons/rx";
 
 const Home = () => {
   const fetchData = async () => {
@@ -16,19 +17,24 @@ const Home = () => {
   if (error) return <div>Error: {error.message}</div>;
   return (
     <div>
-      <h1 className="text-xl font-bold p-4 text-center">This is explore page / home page</h1>
-      <div className="grid grid-cols-4 gap-1">
+      <h1 className="text-xl p-4 text-center">Explore</h1>
+      <div className="grid grid-cols-4 gap-2">
         {data.map((posts) => (
           <div key={posts.id}>
             <div className="flex justify-center">
               <img
                 src={`http://localhost:8000/${posts.imageUrl.replace("public\\uploads\\", "uploads/")}`}
                 alt="image"
+                className="h-[300px] w-full  rounded-lg"
               />
             </div>
-            <p>{posts.imageUrl}</p>
 
-            <p className="text-center ">{posts.caption}</p>
+            <div className=" flex border-2 gap-10 rounded-lg mt-2 p-2 pb-4">
+              <div className=" text-4xl pl-4 pt-2">
+                <RxAvatar />
+              </div>
+              {posts.caption}
+            </div>
           </div>
         ))}
       </div>

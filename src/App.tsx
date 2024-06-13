@@ -1,6 +1,7 @@
 import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import Layout from "./components/Layout";
 import Error404 from "./pages/Error404";
@@ -31,6 +32,7 @@ function App() {
   ]);
   return (
     <>
+      <Toaster position="top-center" />
       <RouterProvider router={router} />
     </>
   );

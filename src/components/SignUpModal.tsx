@@ -2,13 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { ImCross } from "react-icons/im";
+import { toast } from "sonner";
 import * as z from "zod";
+
+import Modal from "./Modal";
 
 interface SignupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SignUpModal: React.FC<SignupModalProps> = ({ isOpen, onClose }) => {
@@ -23,25 +24,37 @@ const SignUpModal: React.FC<SignupModalProps> = ({ isOpen, onClose }) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ resolver: zodResolver(SignUpSchema) });
+  } = useForm({
+    resolver: zodResolver(SignUpSchema),
+  });
 
-  const { mutate } = useMutation({
+  const { mutate, error } = useMutation({
     mutationFn: async (data) => {
-      const res = await fetch("http://localhost:8000/users/register", {
+      const response = await fetch("http://localhost:8000/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
+      const result = await response.json();
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(result.error);
+      }
+      return result;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       onClose();
       reset();
+      toast.success("Successfully registered!");
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
+      toast.error("Registration failed!");
+      reset();
     },
   });
 
@@ -49,56 +62,49 @@ const SignUpModal: React.FC<SignupModalProps> = ({ isOpen, onClose }) => {
     mutate(data);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed flex top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75  justify-center items-center">
-      <div className="bg-white p-5 rounded-lg w-11/12 max-w-lg relative">
-        <h2 className="text-xl mb-4 text-center">Sign Up</h2>
-        <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-200  absolute right-5 top-5">
-          <ImCross />
-        </button>
-        <div className="p-2 mt-10 flex justify-center">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-4 ">
-              <label className="block mb-2 text-sm font-medium text-gray-900 ">Username</label>
-              <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-96 p-2.5"
-                type="text"
-                {...register("username")}
-                placeholder="Username"
-              />
-              {errors.username && <p>{errors.username.message}</p>}
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-gray-900">Email</label>
-              <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-96 block p-2.5"
-                type="email"
-                {...register("email")}
-                placeholder="Email"
-              />
-              {errors.email && <p>{errors.email.message}</p>}
-            </div>
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-900">Password</label>
-              <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-96 p-2.5"
-                type="password"
-                {...register("password")}
-                placeholder="Password"
-              />
-              {errors.password && <p>{errors.password.message}</p>}
-            </div>
-            <div className="flex items-center justify-between">
-              <button className="text-white bg-slate-800 hover:bg-slate-900 p-2 rounded-lg w-96 mt-5" type="submit">
-                Sign Up
-              </button>
-            </div>
-          </form>
+    <Modal isOpen={isOpen} onClose={onClose} title="Sign Up">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          {error && <p className=" text-center text-red-700 p-2">{error.message}</p>}
+
+          <label className="block mb-2 text-sm font-medium text-gray-900">Username</label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-96 p-2.5"
+            type="text"
+            {...register("username")}
+            placeholder="Username"
+          />
+          {errors.username && <p className="text-red-700 p-2">{`${errors.username.message}`}</p>}
         </div>
-      </div>
-    </div>
+        <div className="mb-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900">Email</label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-96 block p-2.5"
+            type="email"
+            {...register("email")}
+            placeholder="Email"
+          />
+          {errors.email && <p className="text-red-700 p-2">{`${errors.email.message}`}</p>}
+        </div>
+        <div className="mb-6">
+          <label className="block mb-2 text-sm font-medium text-gray-900">Password</label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-96 p-2.5"
+            type="password"
+            {...register("password")}
+            placeholder="Password"
+          />
+          {errors.password && <p className="text-red-700 p-2">{`${errors.password.message}`}</p>}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button className="text-white bg-slate-800 hover:bg-slate-900 p-2 rounded-lg w-96 mt-5" type="submit">
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 

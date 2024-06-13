@@ -32,9 +32,11 @@ const Navbar = () => {
         <Link to={"/"} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">
           Explore
         </Link>
-        <Link to={"/profile"} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">
-          Profile
-        </Link>
+        {token && (
+          <Link to={"/profile"} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">
+            Profile
+          </Link>
+        )}
       </div>
       <div className="flex gap-4">
         {token ? (

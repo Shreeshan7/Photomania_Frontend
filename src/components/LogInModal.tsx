@@ -56,7 +56,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       toast.success("Successfully logged in!");
       setToken(data.token);
       localStorage.setItem("token", data.token);
-      navigate("/profile");
+      navigate("/");
     },
     onError: (error) => {
       console.log(error);

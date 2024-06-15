@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import CreatePost from "./CreatePost";
 import LoginModal from "./LogInModal";
 import SignUpModal from "./SignUpModal";
 
 const Navbar = () => {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const { token, logout } = useAuth();
 
   const openSignUpModal = () => {
@@ -26,6 +28,14 @@ const Navbar = () => {
     setIsLoginModalOpen(false);
   };
 
+  const openCreatePostModal = () => {
+    setIsCreatePostModalOpen(true);
+  };
+
+  const closeCreatePostModal = () => {
+    setIsCreatePostModalOpen(false);
+  };
+
   return (
     <div className="flex p-5 bg-black justify-between">
       <div className="flex gap-4">
@@ -33,9 +43,17 @@ const Navbar = () => {
           Explore
         </Link>
         {token && (
-          <Link to={"/profile"} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">
-            Profile
-          </Link>
+          <div>
+            <Link to={"/profile"} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">
+              Profile
+            </Link>
+            <button
+              onClick={openCreatePostModal}
+              className="p-2 rounded-lg bg-slate-950 hover:bg-slate-700 px-3 text-white"
+            >
+              Add
+            </button>
+          </div>
         )}
       </div>
       <div className="flex gap-4">
@@ -57,6 +75,7 @@ const Navbar = () => {
 
       <SignUpModal isOpen={isSignUpModalOpen} onClose={closeSignUpModal} />
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+      <CreatePost isOpen={isCreatePostModalOpen} onClose={closeCreatePostModal} />
     </div>
   );
 };

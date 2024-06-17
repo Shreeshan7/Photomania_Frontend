@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 import { useAuth } from "../context/AuthContext";
+import { queryClient } from "../main";
 import Modal from "./Modal";
 
 interface CreatePostModalProps {
@@ -52,7 +53,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
       return result;
     },
 
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries("posts");
       onClose();
       reset();
       setImagePreview(null);

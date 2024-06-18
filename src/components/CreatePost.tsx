@@ -54,7 +54,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
     },
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries("posts");
+      await queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
       reset();
       setImagePreview(null);
@@ -82,7 +82,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create Post">
-      <div className="">
+      <div className="w-[100vh]">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg shadow-md"
@@ -91,7 +91,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
             {imagePreview ? (
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900">Image Preview</label>
-                <img className="rounded-lg" src={imagePreview} alt="Image Preview" />
+                <img className="rounded-lg object-contain" src={imagePreview} alt="Image Preview" />
               </div>
             ) : (
               <div className="flex items-center justify-center h-full text-gray-500">
@@ -99,19 +99,18 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               </div>
             )}
           </div>
-          <div className="space-y-4">
-            <div className="p-4 bg-white rounded-lg shadow">
-              <label className="block mb-2 text-sm font-medium text-gray-900">Caption</label>
-              <input
+          <div className=" space-y-4">
+            <div className="p-4 bg-white rounded-lg">
+              <label className="block mb-2   text-gray-900">Caption</label>
+              <textarea
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                type="text"
                 {...register("caption")}
                 placeholder="Caption"
               />
               {errors.caption && <p className="text-red-700 p-2">{`${errors.caption.message}`}</p>}
             </div>
-            <div className="p-4 bg-white rounded-lg shadow">
-              <label className="block mb-2 text-sm font-medium text-gray-900">Choose Image</label>
+            <div className="p-4 bg-white rounded-lg">
+              <label className="block mb-2  text-gray-900">Choose Image</label>
               <input
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                 type="file"
@@ -120,7 +119,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               {errors.image && <p className="text-red-700 p-2">{`${errors.image.message}`}</p>}
             </div>
             <div className="flex items-center justify-between">
-              <button className="text-white bg-slate-800 hover:bg-slate-900 p-2 rounded-lg w-full mt-5" type="submit">
+              <button className="text-white bg-slate-800 hover:bg-slate-900 p-2 rounded-lg w-full" type="submit">
                 Create Post
               </button>
             </div>

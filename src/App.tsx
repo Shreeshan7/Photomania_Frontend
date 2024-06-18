@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import Layout from "./components/Layout";
 import Error404 from "./pages/Error404";
 import Home from "./pages/Home";
+import PostDetails from "./pages/PostDetails";
 import { Profile } from "./pages/Profile";
 
 function App() {
@@ -22,7 +23,10 @@ function App() {
           path: "/profile",
           element: <Profile />,
         },
-
+        {
+          path: "/posts/:id",
+          element: <PostDetails />,
+        },
         {
           path: "*",
           element: <Error404 />,

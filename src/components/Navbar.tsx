@@ -58,9 +58,11 @@ const Navbar = () => {
       </div>
       <div className="flex gap-4">
         {token ? (
-          <button onClick={logout} className="p-2 rounded-lg bg-slate-950 hover:bg-slate-700 px-3 text-white">
-            Logout
-          </button>
+          <div>
+            <button onClick={logout} className="p-2 rounded-lg bg-slate-950 hover:bg-slate-700 px-3 text-white">
+              Logout
+            </button>
+          </div>
         ) : (
           <>
             <button onClick={openSignUpModal} className="p-2 rounded-lg hover:bg-slate-700 px-3 text-white">

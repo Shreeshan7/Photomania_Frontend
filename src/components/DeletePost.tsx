@@ -9,7 +9,7 @@ import Modal from "./Modal";
 interface DeletePostModalProps {
   isOpen: boolean;
   onClose: () => void;
-  postId: string;
+  postId: number;
 }
 
 const DeletePost: React.FC<DeletePostModalProps> = ({ isOpen, onClose, postId }) => {

@@ -6,6 +6,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 
 import DeletePost from "../components/DeletePost";
+import UpdatePost from "../components/UpdatePost";
 import { useAuth } from "../context/AuthContext";
 
 interface JwtPayload {
@@ -16,6 +17,7 @@ const PostDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [option, setOption] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModal] = useState(false);
   const { token } = useAuth();
 
   let userId;
@@ -27,6 +29,7 @@ const PostDetails = () => {
   }
 
   const fetchPost = async () => {
+    console.log(id);
     const res = await fetch(`http://localhost:8000/posts/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -57,6 +60,14 @@ const PostDetails = () => {
     setIsDeleteModalOpen(false);
   };
 
+  const openUpdateModal = () => {
+    setIsUpdateModal(true);
+  };
+
+  const closeUpdateModal = () => {
+    setIsUpdateModal(false);
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading post.</div>;
 
@@ -71,7 +82,9 @@ const PostDetails = () => {
             {option && (
               <div className="flex flex-col absolute top-3 -right-24">
                 <div className="rounded-md bg-blue-600 hover:bg-blue-800">
-                  <button className="text-white px-4 py-2">Update</button>
+                  <button className="text-white px-4 py-2" onClick={openUpdateModal}>
+                    Updates
+                  </button>
                 </div>
                 <div className="border-2 rounded-md bg-red-600 hover:bg-red-700">
                   <button onClick={openDeleteModal} className="text-white px-4 py-2">
@@ -94,7 +107,7 @@ const PostDetails = () => {
             <RxAvatar className="w-8 h-8" />
           </div>
           <div className="flex justify-between w-full">
-            <span className="text-gray-900 font-sans text-lg">Shreeshan</span>
+            <span className="text-gray-900 font-sans text-lg">{post.user.username}</span>
             <span className="text-gray-900 text-sm">{new Date(post.createdAt).toLocaleDateString()}</span>
           </div>
         </div>
@@ -103,6 +116,7 @@ const PostDetails = () => {
         </div>
       </div>
       <DeletePost isOpen={isDeleteModalOpen} onClose={closeDeleteModal} postId={id} />
+      <UpdatePost isOpen={isUpdateModalOpen} onClose={closeUpdateModal} postId={id} />
     </div>
   );
 };

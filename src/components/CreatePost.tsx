@@ -19,7 +19,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const CreatePostSchema = z.object({
-    caption: z.string().min(1, "Caption is required").max(40),
+    caption: z.string().min(1, "Caption is required").max(50, "Caption must be max of 50 letters"),
     image: z.instanceof(FileList).refine((files) => files?.length > 0, "Please select an image"),
   });
 
@@ -70,7 +70,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FomrData) => {
     mutate(data);
   };
 
@@ -117,6 +117,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               <input
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                 type="file"
+                accept="image/png, image/jpg, image/jpeg"
                 onChange={handleChange}
               />
               {errors.image && <p className="text-red-700 p-2">{`${errors.image.message}`}</p>}

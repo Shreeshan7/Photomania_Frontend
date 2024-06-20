@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -45,6 +45,12 @@ const UpdatePost: React.FC<UpdatePostModalProps> = ({ isOpen, onClose, postId, p
     },
   });
 
+  useEffect(() => {
+    if (post.imageUrl) {
+      setImagePreview(`http://localhost:8000/${post.imageUrl.replace("public\\uploads\\", "uploads/")}`);
+    }
+  }, [post]);
+
   const { mutate } = useMutation({
     mutationFn: async (data: FomrData) => {
       const formData = new FormData();
@@ -81,19 +87,22 @@ const UpdatePost: React.FC<UpdatePostModalProps> = ({ isOpen, onClose, postId, p
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FomrData) => {
     mutate(data);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      setValue("image", e.target.files);
-      const file = e.target.files[0];
+    const files = e.target.files;
+
+    if (files?.length) {
+      setValue("image", files);
+
+      const file = files[0];
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
     }
   };
-
+  console.log(imagePreview);
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Update Post">
       <div className="w-[100vh]">

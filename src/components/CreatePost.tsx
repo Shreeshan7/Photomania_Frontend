@@ -19,9 +19,11 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const CreatePostSchema = z.object({
-    caption: z.string().min(1, "Caption is required"),
+    caption: z.string().min(1, "Caption is required").max(40),
     image: z.instanceof(FileList).refine((files) => files?.length > 0, "Please select an image"),
   });
+
+  type FomrData = z.infer<typeof CreatePostSchema>;
 
   const {
     register,
@@ -34,7 +36,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
   });
 
   const { mutate } = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: FomrData) => {
       const formData = new FormData();
       formData.append("caption", data.caption);
       formData.append("image", data.image[0]);
@@ -53,8 +55,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
       return result;
     },
 
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["posts"] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["usersPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
       reset();
       setImagePreview(null);

@@ -10,22 +10,27 @@ import { useAuth } from "../context/AuthContext";
 import { queryClient } from "../main";
 import Modal from "./Modal";
 
-interface CreatePostModalProps {
+interface UpdatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
   postId: number;
+  post: {
+    caption: string;
+    imageUrl: string;
+  };
 }
 
-const UpdatePost: React.FC<CreatePostModalProps> = ({ isOpen, onClose, postId }) => {
+const UpdatePost: React.FC<UpdatePostModalProps> = ({ isOpen, onClose, postId, post }) => {
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(post.imageUrl);
 
-  const CreatePostSchema = z.object({
+  const UpdatePostSchema = z.object({
     caption: z.string().min(1, "Caption is required"),
     image: z.instanceof(FileList).refine((files) => files?.length > 0, "Please select an image"),
   });
 
+  type FomrData = z.infer<typeof UpdatePostSchema>;
   const {
     register,
     handleSubmit,
@@ -33,11 +38,15 @@ const UpdatePost: React.FC<CreatePostModalProps> = ({ isOpen, onClose, postId })
     reset,
     setValue,
   } = useForm({
-    resolver: zodResolver(CreatePostSchema),
+    resolver: zodResolver(UpdatePostSchema),
+    defaultValues: {
+      caption: post.caption,
+      image: null as unknown as FileList,
+    },
   });
 
   const { mutate } = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: FomrData) => {
       const formData = new FormData();
       formData.append("caption", data.caption);
       formData.append("image", data.image[0]);
@@ -57,7 +66,8 @@ const UpdatePost: React.FC<CreatePostModalProps> = ({ isOpen, onClose, postId })
       }
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["usersPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
       reset();
       setImagePreview(null);

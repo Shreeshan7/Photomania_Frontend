@@ -35,10 +35,9 @@ function App() {
     },
   ]);
   return (
-    <>
-      <Toaster position="top-center" />
+    <div>
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 }
 

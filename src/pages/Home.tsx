@@ -2,6 +2,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
+import load from "../assets/load.gif";
+
 interface Post {
   id: number;
   imageUrl: string;
@@ -29,7 +31,8 @@ const Home = () => {
     initialPageParam: 1,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <img className="ml-96" src={load} alt="Loading" />;
+
   if (isError) return <div>Error loading posts.</div>;
 
   return (

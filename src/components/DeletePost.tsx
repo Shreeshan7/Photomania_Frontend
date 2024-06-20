@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { useAuth } from "../context/AuthContext";
+import { queryClient } from "../main";
 import Modal from "./Modal";
 
 interface DeletePostModalProps {
@@ -32,8 +33,9 @@ const DeletePost: React.FC<DeletePostModalProps> = ({ isOpen, onClose, postId })
       return result;
     },
 
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success("Successfully Deleted!");
       onClose();
       navigate("/");

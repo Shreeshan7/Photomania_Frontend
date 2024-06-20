@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import { AuthProvider } from "../context/AuthContext";
 import Footer from "./Footer";
@@ -8,11 +9,14 @@ const Layout = () => {
   return (
     <>
       <AuthProvider>
-        <Navbar />
-        <div className="px-5 pb-2">
-          <Outlet />
+        <Toaster position="top-center" />
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <div className="flex-grow px-5 pb-2">
+            <Outlet />
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </AuthProvider>
     </>
   );

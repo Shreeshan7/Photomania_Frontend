@@ -29,7 +29,6 @@ const PostDetails = () => {
   }
 
   const fetchPost = async () => {
-    console.log(id);
     const res = await fetch(`http://localhost:8000/posts/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -75,19 +74,19 @@ const PostDetails = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col space-y-4 p-4 border-2 bg-white shadow-lg rounded w-1/2 m-4 relative">
+      <div className="flex flex-col space-y-4 p-2 border-2 bg-white shadow-lg rounded w-1/2 m-4 relative">
         {isPostOwner && (
           <div className="flex justify-end cursor-pointer">
             <FaEdit onClick={handleOption} />
             {option && (
               <div className="flex flex-col absolute top-3 -right-24">
-                <div className="rounded-md bg-blue-600 hover:bg-blue-800">
-                  <button className="text-white px-4 py-2" onClick={openUpdateModal}>
-                    Updates
+                <div className="rounded-md broder-2 bg-zinc-300 shadow-lg">
+                  <button className="px-4 py-1" onClick={openUpdateModal}>
+                    Update
                   </button>
                 </div>
-                <div className="border-2 rounded-md bg-red-600 hover:bg-red-700">
-                  <button onClick={openDeleteModal} className="text-white px-4 py-2">
+                <div className="rounded-md text-white border-2 bg-red-500 shadow-lg">
+                  <button onClick={openDeleteModal} className="px-4 py-1">
                     Delete
                   </button>
                 </div>
@@ -116,7 +115,7 @@ const PostDetails = () => {
         </div>
       </div>
       <DeletePost isOpen={isDeleteModalOpen} onClose={closeDeleteModal} postId={id} />
-      <UpdatePost isOpen={isUpdateModalOpen} onClose={closeUpdateModal} postId={id} />
+      <UpdatePost isOpen={isUpdateModalOpen} onClose={closeUpdateModal} postId={id} post={post} />
     </div>
   );
 };

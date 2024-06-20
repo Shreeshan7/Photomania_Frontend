@@ -80,12 +80,12 @@ const PostDetails = () => {
             <FaEdit onClick={handleOption} />
             {option && (
               <div className="flex flex-col absolute top-3 -right-24">
-                <div className="rounded-md broder-2 bg-zinc-300 shadow-lg">
+                <div className="rounded-md broder-2 bg-slate-200 shadow-lg">
                   <button className="px-4 py-1" onClick={openUpdateModal}>
                     Update
                   </button>
                 </div>
-                <div className="rounded-md text-white border-2 bg-red-500 shadow-lg">
+                <div className="rounded-md text-white border-2 bg-red-500 shadow-lg mt-1">
                   <button onClick={openDeleteModal} className="px-4 py-1">
                     Delete
                   </button>

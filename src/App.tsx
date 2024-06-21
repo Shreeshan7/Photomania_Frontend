@@ -1,9 +1,9 @@
 import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Toaster } from "sonner";
 
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Error404 from "./pages/Error404";
 import Home from "./pages/Home";
 import PostDetails from "./pages/PostDetails";
@@ -21,7 +21,11 @@ function App() {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/posts/:id",

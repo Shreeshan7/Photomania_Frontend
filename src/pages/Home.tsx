@@ -1,20 +1,24 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import load from "../assets/load.gif";
+import Loading from "../components/Loading";
 
 interface Post {
   id: number;
   imageUrl: string;
   caption: string;
   createdAt: Date;
+  user: {
+    username: string;
+    imageUrl: string;
+  };
 }
 
 const Home = () => {
   const navigate = useNavigate();
 
   const fetchData = async ({ pageParam = 1 }) => {
-    const res = await fetch(`http://localhost:8000/posts?page=${pageParam}&limit=8`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/posts?page=${pageParam}&limit=8`);
     const data = await res.json();
     console.log("this is home ok", data);
     return data;
@@ -23,14 +27,15 @@ const Home = () => {
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: fetchData,
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
-      return lastPage.posts.length > 0 ? nextPage : undefined;
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.lastPage) {
+        return lastPage.page + 1;
+      }
     },
     initialPageParam: 1,
   });
 
-  if (isLoading) return <img src={load} alt="Loading" />;
+  if (isLoading) return <Loading />;
 
   if (isError) return <div>Error loading posts.</div>;
 

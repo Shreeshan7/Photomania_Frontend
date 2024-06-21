@@ -5,6 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { RxAvatar } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 
+import load from "../assets/load.gif";
 import DeletePost from "../components/DeletePost";
 import UpdatePost from "../components/UpdatePost";
 import { useAuth } from "../context/AuthContext";
@@ -29,7 +30,7 @@ const PostDetails = () => {
   }
 
   const fetchPost = async () => {
-    const res = await fetch(`http://localhost:8000/posts/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/posts/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -57,6 +58,7 @@ const PostDetails = () => {
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
+    setOption(false);
   };
 
   const openUpdateModal = () => {
@@ -65,22 +67,23 @@ const PostDetails = () => {
 
   const closeUpdateModal = () => {
     setIsUpdateModal(false);
+    setOption(false);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <img src={load} alt="Loading" />;
   if (isError) return <div>Error loading post.</div>;
 
-  const isPostOwner = post.user.id === userId;
+  const isPostOwner = post.user?.id === userId;
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col space-y-4 p-2 border-2 bg-white shadow-lg rounded w-1/2 m-4 relative">
+    <div className="flex justify-center p-2">
+      <div className="flex flex-col space-y-4 p-4 border-2 bg-white shadow-lg rounded w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 m-6 relative">
         {isPostOwner && (
           <div className="flex justify-end cursor-pointer">
             <FaEdit onClick={handleOption} />
             {option && (
               <div className="flex flex-col absolute top-3 -right-24">
-                <div className="rounded-md broder-2 bg-slate-200 shadow-lg">
+                <div className="rounded-md border-2 bg-slate-200 shadow-lg">
                   <button className="px-4 py-1" onClick={openUpdateModal}>
                     Update
                   </button>

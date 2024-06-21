@@ -23,18 +23,20 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     password: z.string().min(1, "Password is required").min(6),
   });
 
+  type FomrData = z.infer<typeof LoginSchema>;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<FomrData>({
     resolver: zodResolver(LoginSchema),
   });
 
   const { mutate } = useMutation({
-    mutationFn: async (data) => {
-      const response = await fetch("http://localhost:8000/users/login", {
+    mutationFn: async (data: FomrData) => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login `, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FomrData) => {
     mutate(data);
   };
 

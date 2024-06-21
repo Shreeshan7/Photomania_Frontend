@@ -77,7 +77,7 @@ const Navbar = () => {
             </button>
             <button
               onClick={openLoginModal}
-              className="rounded-md bg-gradient-to-br from-green-600 to-emerald-400 px-4 py-2 font-dm text-sm font-medium text-white shadow-md shadow-green-400/50 transition-transform duration-200"
+              className="rounded-md bg-gradient-to-br bg-slate-800 hover:bg-slate-900 px-4 py-2 font-dm text-sm font-medium text-white shadow-md shadow-green-400/50 transition-transform duration-200"
             >
               Log In
             </button>

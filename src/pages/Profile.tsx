@@ -120,7 +120,13 @@ export const Profile = () => {
         </div>
         {option && (
           <div className="absolute border-2 -top-3 -right-36 mr-4 mt-4 bg-white shadow-md rounded-md p-1">
-            <input className="hidden" type="file" id="image" onChange={handleFileChange} />
+            <input
+              className="hidden"
+              type="file"
+              id="image"
+              accept="image/jpg, image/jpeg, image/png"
+              onChange={handleFileChange}
+            />
             <label htmlFor="image" className="text-black rounded-md cursor-pointer">
               Upload Picture
             </label>
@@ -154,7 +160,7 @@ export const Profile = () => {
               type="range"
               min="1"
               max="3"
-              step="0.4"
+              step="0.1"
               value={zoom}
               onChange={(e) => setZoom(parseFloat(e.target.value))}
               className="zoom-slider"

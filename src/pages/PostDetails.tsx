@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { RxAvatar } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 
 import load from "../assets/load.gif";
@@ -106,7 +105,11 @@ const PostDetails = () => {
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex-shrink-0">
-            <RxAvatar className="w-8 h-8" />
+            <img
+              src={`http://localhost:8000/${post.user.imageUrl.replace("public\\uploads\\", "uploads/")}`}
+              alt="profilePic"
+              className="rounded-full h-10 w-10"
+            />
           </div>
           <div className="flex justify-between w-full">
             <span className="text-gray-900 font-sans text-lg">{post.user.username}</span>

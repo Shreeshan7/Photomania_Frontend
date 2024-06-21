@@ -41,8 +41,9 @@ const Home = () => {
 
   return (
     <div>
-      <h1 className=" text-3xl p-4 text-center">Explore</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <h1 className=" text-3xl p-3 text-center">Explore</h1>
+      <p className="text-center mb-4">Capture, Share, Cherish: Your Moments, Our Platform</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-2">
         {data?.pages.map((page) =>
           page.posts.map((post: Post) => (
             <div key={post.id}>
@@ -79,13 +80,15 @@ const Home = () => {
         )}
       </div>
       {hasNextPage && (
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-          className="rounded-md bg-gradient-to-br from-green-600 p-2 mt-2 to-emerald-400 px-4 font-dm text-sm font-medium text-white shadow-md shadow-green-400/50 transition-transform duration-200"
-        >
-          {isFetchingNextPage ? "Loading more..." : "Load More"}
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="rounded-md bg-gradient-to-br mt-2 bg-slate-800 hover:bg-slate-900 px-4 py-2 font-dm text-sm font-medium text-white shadow-md shadow-green-400/50 transition-transform duration-200"
+          >
+            {isFetchingNextPage ? "Loading more..." : "Load More"}
+          </button>
+        </div>
       )}
     </div>
   );

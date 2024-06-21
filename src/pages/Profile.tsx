@@ -5,7 +5,7 @@ import AvatarEditor from "react-avatar-editor";
 import { SlOptionsVertical } from "react-icons/sl";
 import { toast } from "sonner";
 
-import load from "../assets/load.gif";
+import Loading from "../components/Loading";
 import UsersPost from "../components/UsersPost";
 import { useAuth } from "../context/AuthContext";
 import { queryClient } from "../main";
@@ -50,7 +50,7 @@ export const Profile = () => {
       const formData = new FormData();
       formData.append("image", file);
 
-      const res = await fetch(`http://localhost:8000/users/${userId}/profilePicture`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/profilePicture`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export const Profile = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setOption(false);
-      toast.success("Profile pic good");
+      toast.success("Profile Picture has been updated");
       setImageSrc(null);
     },
   });
@@ -101,7 +101,7 @@ export const Profile = () => {
     setImageSrc(null);
   };
 
-  if (isLoading) return <img className=" ml-96" src={load} alt="Loading" />;
+  if (isLoading) return <Loading />;
   if (isError) return <div>Error loading data</div>;
   if (!data) return <div>No profile data available</div>;
   return (
@@ -126,11 +126,11 @@ export const Profile = () => {
             </label>
           </div>
         )}
-        <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
+        <div className="mx-auto w-32 h-32 relative -mt-16  border-4 border-white rounded-full overflow-hidden">
           <img
             className="object-cover object-center h-32"
             src={`http://localhost:8000/${data.imageUrl.replace("public\\uploads\\", "uploads/")}`}
-            alt="profile picture"
+            alt=""
           />
         </div>
         <div className="text-center mt-2 pb-8 pt-4">
@@ -154,7 +154,7 @@ export const Profile = () => {
               type="range"
               min="1"
               max="3"
-              step="0.1"
+              step="0.4"
               value={zoom}
               onChange={(e) => setZoom(parseFloat(e.target.value))}
               className="zoom-slider"

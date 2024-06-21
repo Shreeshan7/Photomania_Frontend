@@ -31,7 +31,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
     formState: { errors },
     reset,
     setValue,
-  } = useForm({
+  } = useForm<FomrData>({
     resolver: zodResolver(CreatePostSchema),
   });
 
@@ -40,7 +40,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
       const formData = new FormData();
       formData.append("caption", data.caption);
       formData.append("image", data.image[0]);
-      const response = await fetch("http://localhost:8000/posts", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/posts`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create Post">
-      <div className="w-[100vh]">
+      <div className="max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw] mx-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg shadow-md"
@@ -94,7 +94,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
             {imagePreview ? (
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900">Image Preview</label>
-                <img className="rounded-lg object-contain" src={imagePreview} alt="Image Preview" />
+                <img className="rounded-lg object-contain w-full" src={imagePreview} alt="Image Preview" />
               </div>
             ) : (
               <div className="flex items-center justify-center h-full text-gray-500">
@@ -102,9 +102,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               </div>
             )}
           </div>
-          <div className=" space-y-4">
+          <div className="space-y-4">
             <div className="p-4 bg-white rounded-lg">
-              <label className="block mb-2   text-gray-900">Caption</label>
+              <label className="block mb-2 text-gray-900">Caption</label>
               <textarea
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                 {...register("caption")}
@@ -113,7 +113,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               {errors.caption && <p className="text-red-700 p-2">{`${errors.caption.message}`}</p>}
             </div>
             <div className="p-4 bg-white rounded-lg">
-              <label className="block mb-2  text-gray-900">Choose Image</label>
+              <label className="block mb-2 text-gray-900">Choose Image</label>
               <input
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                 type="file"

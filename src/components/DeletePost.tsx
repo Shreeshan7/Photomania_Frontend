@@ -19,7 +19,7 @@ const DeletePost: React.FC<DeletePostModalProps> = ({ isOpen, onClose, postId })
 
   const { mutate } = useMutation({
     mutationFn: async () => {
-      const response = await fetch(`http://localhost:8000/posts/${postId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ const DeletePost: React.FC<DeletePostModalProps> = ({ isOpen, onClose, postId })
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success("Successfully Deleted!");
       onClose();
-      navigate("/");
+      navigate(`/profile`);
     },
     onError: (error) => {
       console.error(error);

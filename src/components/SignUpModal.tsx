@@ -19,18 +19,20 @@ const SignUpModal: React.FC<SignupModalProps> = ({ isOpen, onClose }) => {
     password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters long").max(15),
   });
 
+  type FomrData = z.infer<typeof SignUpSchema>;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<FomrData>({
     resolver: zodResolver(SignUpSchema),
   });
 
   const { mutate, error } = useMutation({
-    mutationFn: async (data) => {
-      const response = await fetch("http://localhost:8000/users/register", {
+    mutationFn: async (data: FomrData) => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +60,7 @@ const SignUpModal: React.FC<SignupModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FomrData) => {
     mutate(data);
   };
 
